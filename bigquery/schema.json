@@ -1,0 +1,15 @@
+[
+  { "name": "event_pk", "type": "INT64", "mode": "REQUIRED", "description": "Primary key in PostgreSQL" },
+  { "name": "event_id", "type": "STRING", "mode": "REQUIRED", "description": "Client generated idempotency key" },
+  { "name": "name", "type": "STRING", "mode": "REQUIRED", "description": "visit, upload, upload_failed or export" },
+  { "name": "anonymous_id", "type": "STRING", "mode": "REQUIRED", "description": "Random per-browser ID (shoebox.cid)" },
+  { "name": "occurred_at", "type": "TIMESTAMP", "mode": "REQUIRED" },
+  { "name": "received_at", "type": "TIMESTAMP", "mode": "REQUIRED" },
+  { "name": "page_path", "type": "STRING", "mode": "NULLABLE" },
+  { "name": "referrer_host", "type": "STRING", "mode": "NULLABLE", "description": "Visit events only" },
+  { "name": "utm_source", "type": "STRING", "mode": "NULLABLE", "description": "Visit events only" },
+  { "name": "utm_medium", "type": "STRING", "mode": "NULLABLE", "description": "Visit events only" },
+  { "name": "utm_campaign", "type": "STRING", "mode": "NULLABLE", "description": "Visit events only" },
+  { "name": "source", "type": "STRING", "mode": "NULLABLE", "description": "Classified source label, visit events only" },
+  { "name": "properties", "type": "JSON", "mode": "NULLABLE" }
+]

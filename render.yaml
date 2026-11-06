@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: trailmark
+    runtime: node
+    plan: starter
+    # Dev dependencies (TypeScript, Vite) are needed to build even though NODE_ENV is production.
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: WRITE_KEYS
+        generateValue: true
+      - key: DASHBOARD_TOKEN
+        generateValue: true
+      - key: SITE_HOSTS
+        value: shoebox-taupe.vercel.app
+      - key: TRUST_PROXY
+        value: "1"
+      - key: BIGQUERY_PROJECT_ID
+        sync: false
+      - key: GA_PROPERTY_ID
+        sync: false

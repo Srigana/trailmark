@@ -1,0 +1,26 @@
+{
+  "name": "trailmark",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Attribution and activation analytics for Shoebox: collector API, PostgreSQL, BigQuery analysis and a React dashboard.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "build": "npm run build -w server && npm run build -w client",
+    "start": "npm run start -w server",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w client\"",
+    "migrate": "npm run migrate -w server",
+    "seed": "npm run seed -w server",
+    "test": "npm run test -w server",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w client",
+    "sync:bigquery": "npm run sync:bigquery -w server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

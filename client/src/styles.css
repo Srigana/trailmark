@@ -1,0 +1,259 @@
+/*
+ * Trailmark. Wayfinding, not a ledger: Overpass (after Highway Gothic signage) for all text,
+ * cool birch page, basalt ink, trail blue for data. The blaze, a painted vertical bar, is the
+ * one recurring mark: logo, value markers, and waypoints on the funnel.
+ */
+:root {
+  --birch: #f5f6f3;
+  --panel: #ffffff;
+  --basalt: #24282e;
+  --stone: #5d646d;
+  --stone-light: #8a9099;
+  --line: #dde0e3;
+  --line-strong: #c3c8cd;
+  --trail: #2457a6;
+  --trail-wash: #e6edf7;
+  --blaze-orange: #c7711f;
+  --warn: #8a5a00;
+  --warn-wash: #fbf1d9;
+  --bad: #b2362b;
+  --bad-wash: #fbeceb;
+  --good: #2c6b45;
+  --good-wash: #e5f1e9;
+
+  --font: 'Overpass Variable', 'Overpass', system-ui, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale, ratio 1.25 from 15px. */
+  --t-small: 0.8rem;
+  --t-body: 0.9375rem;
+  --t-h2: 1.25rem;
+  --t-h1: 2.15rem;
+  --t-figure: 2.4rem;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--birch);
+  color: var(--basalt);
+  font: 400 var(--t-body)/1.55 var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--trail); text-underline-offset: 2px; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--trail); outline-offset: 2px; }
+code { font-family: var(--mono); font-size: 0.85em; }
+p { margin: 0 0 0.75em; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- the blaze ---------- */
+.blaze {
+  display: inline-block;
+  width: 7px;
+  height: 18px;
+  border-radius: 1.5px;
+  background: var(--trail);
+  flex: none;
+}
+
+/* ---------- shell: rail + page ---------- */
+.shell { display: grid; grid-template-columns: 216px minmax(0, 1fr); min-height: 100vh; }
+
+.rail {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh;
+  display: flex; flex-direction: column; gap: 28px;
+  padding: 24px 16px 20px 20px;
+  border-right: 1px solid var(--line);
+}
+.wordmark {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 800; font-size: 1.2rem; letter-spacing: -0.01em;
+  color: var(--basalt); text-decoration: none;
+}
+.wordmark .blaze { height: 22px; width: 8px; }
+/* The wordmark is a link in the rail but must not pick up the nav item styles. */
+.rail .wordmark, .rail .wordmark:hover { display: flex; padding: 0 0 0 4px; background: none; box-shadow: none; color: var(--basalt); }
+.rail-group { display: grid; gap: 2px; }
+.rail-heading { font-size: var(--t-small); color: var(--stone-light); font-weight: 600; margin: 0 0 6px 10px; }
+.rail a, .rail-range button {
+  display: block; width: 100%; text-align: left;
+  padding: 6px 10px; border: 0; border-radius: 4px; background: none;
+  color: var(--stone); text-decoration: none; font-weight: 550; cursor: pointer;
+}
+.rail a:hover, .rail-range button:hover { color: var(--basalt); background: #eaecef; }
+.rail a.active, .rail-range button[aria-pressed='true'] {
+  color: var(--basalt); background: var(--panel); box-shadow: inset 3px 0 0 var(--trail);
+}
+.rail-foot { margin-top: auto; font-size: var(--t-small); color: var(--stone-light); }
+.rail-foot button { border: 0; background: none; padding: 0; color: var(--stone); text-decoration: underline; cursor: pointer; }
+
+.page { padding: 40px 48px 80px; max-width: 1080px; }
+.page.narrow { max-width: 480px; }
+
+h1 {
+  font-size: var(--t-h1); line-height: 1.15; font-weight: 750;
+  letter-spacing: -0.02em; margin: 0 0 10px; max-width: 30ch;
+}
+h2 { font-size: var(--t-h2); line-height: 1.3; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
+.lede { font-size: 1.05rem; color: var(--stone); max-width: 62ch; margin: 0; }
+.note { color: var(--stone); max-width: 72ch; }
+.small { font-size: var(--t-small); color: var(--stone); }
+
+.block { margin-top: 48px; }
+.block > .note { margin-bottom: 14px; }
+
+/* Charts sit on panels; text sits on the page. */
+.figure {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 20px 20px 12px;
+}
+
+/* ---------- the trail: arrived, uploaded, exported ---------- */
+.trail {
+  list-style: none; margin: 36px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  position: relative;
+}
+.trail::before {
+  content: ''; position: absolute; left: 3px; right: 0; top: 10px;
+  border-top: 2px dashed var(--line-strong);
+}
+.trail li { position: relative; padding-right: 24px; }
+.trail .blaze { position: relative; height: 22px; width: 8px; }
+.trail li:nth-child(2) .blaze { opacity: 0.75; }
+.trail li:nth-child(1) .blaze { opacity: 0.5; }
+.trail-count { display: block; margin-top: 14px; font-size: var(--t-figure); font-weight: 750; line-height: 1; letter-spacing: -0.02em; }
+.trail-label { display: block; margin-top: 6px; font-weight: 650; }
+.trail-share { display: block; color: var(--stone); font-size: 0.875rem; }
+.aside { margin-top: 18px; color: var(--stone); font-size: 0.875rem; }
+
+/* ---------- figure row (quality page) ---------- */
+.figures { display: flex; flex-wrap: wrap; gap: 20px 48px; margin-top: 28px; }
+.figures div { min-width: 120px; }
+.figures strong { display: block; font-size: 1.9rem; font-weight: 750; line-height: 1.1; letter-spacing: -0.02em; }
+.figures span { display: block; color: var(--stone); font-size: 0.875rem; }
+
+/* ---------- controls ---------- */
+.btn {
+  border: 1px solid var(--basalt); background: var(--basalt); color: #fff;
+  border-radius: 4px; padding: 7px 14px; font-weight: 650; cursor: pointer;
+}
+.btn:hover { background: #3a4049; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+input[type='date'], input[type='password'], select {
+  border: 1px solid var(--line-strong); border-radius: 4px; padding: 6px 8px; background: var(--panel);
+}
+.field-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 16px; }
+.field-row label { display: grid; gap: 4px; color: var(--stone); font-size: 0.875rem; }
+.inline-field { display: inline-flex; align-items: center; gap: 8px; color: var(--stone); }
+.token-form { display: grid; gap: 8px; margin-top: 20px; }
+.head-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+
+/* ---------- tables ---------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+thead th { color: var(--stone); font-weight: 600; font-size: var(--t-small); border-bottom-color: var(--line-strong); white-space: nowrap; }
+thead th.group { text-align: center; }
+tbody th { font-weight: 650; }
+tfoot th, tfoot td { font-weight: 700; border-bottom: 0; border-top: 1px solid var(--line-strong); }
+.num { text-align: right; white-space: nowrap; }
+.dim { color: var(--stone-light); }
+.strong { font-weight: 700; }
+.nowrap { white-space: nowrap; }
+tr.thin th, tr.thin td { color: var(--stone-light); }
+td.path { width: 200px; min-width: 140px; }
+details summary { cursor: pointer; color: var(--trail); }
+pre { margin: 8px 0 0; padding: 8px; background: var(--birch); border-radius: 4px; font-size: 0.78rem; max-width: 420px; overflow: auto; }
+
+/* Path bar: arrived (track), uploaded, exported, nested left to right. */
+.path-bar { position: relative; height: 10px; background: #e1e4e8; border-radius: 2px; overflow: hidden; }
+.path-bar span { position: absolute; left: 0; top: 0; bottom: 0; }
+.path-bar .up { background: #9db5dc; }
+.path-bar .ex { background: var(--trail); }
+.path-key { display: flex; gap: 16px; margin: 0 0 10px; padding: 0; list-style: none; font-size: var(--t-small); color: var(--stone); }
+.path-key li { display: flex; align-items: center; gap: 6px; }
+.path-key i { display: inline-block; width: 12px; height: 10px; border-radius: 2px; }
+tbody th { white-space: nowrap; }
+
+/* ---------- charts ---------- */
+.chart { position: relative; overflow-x: auto; }
+.chart svg { display: block; width: 100%; min-width: 560px; height: auto; overflow: visible; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .baseline { stroke: var(--line-strong); stroke-width: 1; }
+.chart .tick { fill: var(--stone); font-size: 12px; font-family: var(--font); }
+.chart .row-label { fill: var(--basalt); font-size: 13px; font-weight: 600; font-family: var(--font); }
+.chart .hover-band { fill: var(--trail); opacity: 0.06; }
+.chart .thin-row { opacity: 0.4; }
+.chart rect[tabindex]:focus { outline: none; }
+.chart rect[tabindex]:focus-visible { stroke: var(--trail); stroke-width: 2; }
+.legend { list-style: none; display: flex; gap: 18px; margin: 0 0 8px; padding: 0; font-size: 0.85rem; color: var(--stone); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.swatch { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.tooltip {
+  position: absolute; pointer-events: none; z-index: 2;
+  display: grid; gap: 1px;
+  background: var(--basalt); color: #fff;
+  padding: 8px 10px; border-radius: 4px;
+  font-size: 0.84rem; white-space: nowrap;
+}
+
+/* ---------- status ---------- */
+.alert { padding: 10px 12px; border-radius: 4px; background: var(--bad-wash); color: var(--bad); margin: 0 0 16px; max-width: 72ch; }
+.error-text { color: var(--bad); }
+.loading { color: var(--stone-light); }
+
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.checks li { display: flex; gap: 10px; align-items: flex-start; }
+.check-mark { flex: none; display: inline-flex; width: 20px; height: 20px; align-items: center; justify-content: center; border-radius: 4px; margin-top: 1px; }
+.checks li.ok .check-mark { color: var(--good); background: var(--good-wash); }
+.checks li.warn .check-mark { color: var(--warn); background: var(--warn-wash); }
+
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; margin: 0; }
+.kv dt { color: var(--stone); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+
+.terms { display: grid; grid-template-columns: max-content minmax(0, 62ch); gap: 8px 28px; margin: 0; }
+.terms dt { font-weight: 700; }
+.terms dd { margin: 0; color: var(--stone); }
+.source-note { margin-top: 20px; color: var(--stone-light); font-size: var(--t-small); }
+
+.reasons { display: grid; gap: 18px; margin: 0; max-width: 72ch; }
+.reasons dt { font-weight: 700; }
+.reasons dd { margin: 2px 0 0; color: var(--stone); }
+.reasons .effect { font-weight: 500; color: var(--stone); }
+.steps { margin: 0; padding-left: 20px; display: grid; gap: 10px; max-width: 72ch; }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); }
+  .rail {
+    position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line);
+    flex-direction: row; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 16px;
+  }
+  .rail-heading { display: none; }
+  .rail-group { display: flex; flex-wrap: wrap; gap: 2px; }
+  .rail a, .rail-range button { width: auto; }
+  .rail-foot { margin-top: 0; }
+  .page { padding: 28px 16px 56px; }
+  h1 { font-size: 1.7rem; }
+  .trail { grid-template-columns: 1fr; gap: 22px; }
+  .trail::before { left: 3px; right: auto; top: 0; bottom: 0; border-top: 0; border-left: 2px dashed var(--line-strong); }
+  .trail li { padding-left: 24px; }
+  .trail .blaze { position: absolute; left: 0; top: 0; }
+  .trail-count { margin-top: 0; }
+  .terms, .kv { grid-template-columns: 1fr; }
+}
